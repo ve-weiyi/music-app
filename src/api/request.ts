@@ -22,9 +22,13 @@ requests.interceptors.request.use(
         // 未登录时的加密方式
         config.headers = Object.assign({}, config.headers, {
             "Model-Type":"PHONE",
-            "App-name":"nebula",
-            "X-Auth-Token":"2204eb14ed08c25fb35e73ad9a53b81b8f2eb811263ff104",
-            "Gtoken":"cc8cae523dfce3790997580bac59a9a2"
+            "App-name": "nebula",
+            // "account":"36de8e994640236e0b6f7e74000ac7bcb7ff5c84",
+            "X-Auth-Token": "f55b40f3faff1f22f76ea1bbf8b940ffa37dd18ce72f04ed",
+            "Gtoken":"cd6f59dcb68e54a69c6680b091747934"
+        
+            // "X-Auth-Token":"2204eb14ed08c25fb35e73ad9a53b81b8f2eb811263ff104",
+            // "Gtoken":"cc8cae523dfce3790997580bac59a9a2"
         });
 
         return config;
@@ -38,6 +42,8 @@ requests.interceptors.request.use(
 requests.interceptors.response.use(
     (response: AxiosResponse) => {
         switch (response.data.code) {
+            case 0:
+                break;
             case 200:
                 break;
             case 500:

@@ -1,33 +1,44 @@
 <template>
   <div class="bg">
-
     <van-nav-bar
-        title="标题"
-        left-text="返回"
-        left-arrow
-        @click-left="onBack"
-        class="navbar"
-        :border="false"
+      title="旋律上传"
+      left-text="返回"
+      left-arrow
+      @click-left="onBack"
+      class="navbar"
+      :border="false"
     >
       <template #right>
-        <van-icon name="search" size="18"/>
+        <van-icon name="search" size="18" />
       </template>
     </van-nav-bar>
 
-    <div class="greeting-page">
-
+    <div class="greeting-page" v-loading="loading">
       <!-- Header -->
-      <div class="header">
-
+      <!-- <div class="header">
         <h3 class="greeting-title">旋律上传</h3>
-      </div>
+      </div> -->
 
       <!-- 背景图和播放按钮 -->
-      <div class="background">
-        <van-uploader accept="radio/*" :after-read="afterRead" >
-          <van-button icon="plus" type="primary">上传文件</van-button>
-        </van-uploader>
+      <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
 
+      <div class="background">
+        <el-upload
+          class="avatar-uploader"
+          method="put"
+          :action="uploadUrl"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+        >
+          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+          <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+        </el-upload>
+        <!-- <van-uploader accept="radio/*" :after-read="afterRead">
+          <van-button icon="plus" type="primary" @click="upload"
+            >上传文件</van-button
+          >
+        </van-uploader> -->
       </div>
 
       <!-- 顶部信息 -->
@@ -40,37 +51,86 @@
 </template>
 
 <script setup lang="ts">
+import { uploadMusicApi } from "@/api/music";
+import { ElMessage } from "element-plus";
+import { ref } from "vue";
+import { Plus } from "@element-plus/icons-vue";
+import type { UploadProps } from "element-plus";
 
 const router = useRouter();
-
+const uploadUrl = ref("");
+const loading = ref(false);
 const onBack = () => history.back();
-
-const afterRead = (file) => {
+const afterRead = file => {
   // 此时可以自行将文件上传至服务器
   console.log(file);
 };
+const imageUrl = ref("");
 
-function onClickMenu(type: number) {
-  console.log('点击了菜单');
-  switch (type) {
-    case 1:
-      router.push('/music');
-      console.log('旋律库');
-      break;
-    case 2:
-      router.push('/upload');
-      console.log('添加音乐');
-      break;
-    case 3:
-      router.push('/aigc');
-      console.log('AIGC音乐');
-      break;
-  }
+const handleAvatarSuccess: UploadProps["onSuccess"] = (
+  response,
+  uploadFile
+) => {
+  loading.value = false;
+  ElMessage({
+    message: "旋律上传成功，请到旋律库中聆听",
+    type: "success"
+  });
+  // imageUrl.value = URL.createObjectURL(uploadFile.raw!);
+};
+
+const beforeAvatarUpload: UploadProps["beforeUpload"] = async rawFile => {
+  loading.value = true;
+  await uploadMusicApi({
+    file_name: rawFile.name,
+    music_type: 2,
+    file_type: 102,
+    ai_music_url: "",
+    tag: "",
+    account: "36de8e994640236e0b6f7e74000ac7bcb7ff5c84"
+  }).then((res: any) => {
+    if (res.code === 0) {
+      uploadUrl.value = res.data.uptoken;
+      return true;
+    } else {
+      ElMessage.error(res.msg);
+      loading.value = false;
+      return false;
+    }
+  });
+};
+</script>
+<style>
+.avatar-uploader .el-upload {
+  /* border: 1px dashed var(--el-border-color); */
+  border: 5px dashed #65687029;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
 }
 
-</script>
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
+</style>
 
 <style scoped>
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+
 .bg {
   background: linear-gradient(to bottom, #c9d6ff, #e2e2e2);
 }

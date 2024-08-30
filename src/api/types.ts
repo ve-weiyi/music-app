@@ -31,3 +31,12 @@ export interface CreateMusicReq {
     tags: string
     title: string
 }
+// UploadMusicReq
+export interface UploadMusicReq {
+    file_name: any 
+    file_type: number //102
+    music_type: number //用户：2 AI：1
+    account: string
+    tag: string,
+    ai_music_url: string
+}
