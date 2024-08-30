@@ -11,6 +11,9 @@ import vueSetupExtend from "vite-plugin-vue-setup-extend";
 import viteCompression from "vite-plugin-compression";
 import { createHtmlPlugin } from "vite-plugin-html";
 import { enableCDN } from "./build/cdn";
+import AutoImport from 'unplugin-auto-import/vite'
+import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
+
 
 // 当前工作目录路径
 const root: string = process.cwd();
@@ -28,7 +31,12 @@ export default defineConfig(({ mode }) => {
       // vant 组件自动按需引入
       Components({
         dts: "src/typings/components.d.ts",
-        resolvers: [VantResolver()]
+        resolvers: [VantResolver(),ElementPlusResolver()]
+      }),
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
+        imports: ["vue", "vue-router", "pinia"],
+        dts: "auto-imports.d.ts",
       }),
       // svg icon
       createSvgIconsPlugin({
@@ -59,12 +67,24 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       host: true,
+      /** 跨域设置允许 */
+      cors: true,
       // 仅在 proxy 中配置的代理前缀， mock-dev-server 才会拦截并 mock
       // doc: https://github.com/pengzhanbo/vite-plugin-mock-dev-server
       proxy: {
-        "^/dev-api": {
-          target: ""
-        }
+        // mock代理
+        "/app": {
+          target: "https://vsaas-api-ci.eufylife.com",
+          ws: false,
+          changeOrigin: true,
+          rewrite: (path) => path.replace("", ""),
+        },
+        "/api": {
+          target: "http://18.212.39.166:3000",
+          ws: false,
+          changeOrigin: true,
+          rewrite: (path) => path.replace("", ""),
+        },
       }
     },
     build: {

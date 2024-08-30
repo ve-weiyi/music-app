@@ -1,39 +1,62 @@
 import Layout from "@/layout/index.vue";
 import type { RouteRecordRaw } from "vue-router";
-import Demo from "@/views/demo/index.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "root",
     component: Layout,
-    redirect: { name: "Demo" },
+    redirect: { name: "Home" },
     children: [
       {
-        path: "demo",
-        name: "Demo",
-        component: Demo,
+        path: "home",
+        name: "Home",
+        component: () => import("@/views/home/index.vue"),
         meta: {
-          title: "主页"
+          title: "首页"
         }
       },
       {
-        path: "tools",
-        name: "Tools",
-        component: () => import("@/views/tools/index.vue"),
+        path: "upload",
+        name: "Upload",
+        component: () => import("@/views/upload/index.vue"),
         meta: {
-          title: "工具"
-        }
-      },
-      {
-        path: "about",
-        name: "About",
-        component: () => import("@/views/about/index.vue"),
-        meta: {
-          title: "关于",
+          title: "用户上传",
           noCache: true
         }
-      }
+      },
+      {
+        path: "aigc",
+        name: "AIGC",
+        component: () => import("@/views/aigc/index.vue"),
+        meta: {
+          title: "AIGC"
+        }
+      },
+      {
+        path: "music",
+        name: "Music",
+        component: () => import("@/views/music/index.vue"),
+        meta: {
+          title: "旋律库"
+        }
+      },
+      {
+        path: "play/:musicId",
+        name: "Play",
+        component: () => import("@/views/play/index.vue"),
+        meta: {
+          title: "播放"
+        }
+      },
+      {
+        path: "upload",
+        name: "Upload",
+        component: () => import("@/views/upload/index.vue"),
+        meta: {
+          title: "用户上传"
+        }
+      },
     ]
   }
 ];
