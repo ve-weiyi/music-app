@@ -8,7 +8,7 @@ import "./styles/index.less";
 import "./styles/tailwind.css";
 // svg icon
 import "virtual:svg-icons-register";
-
+import 'element-plus/dist/index.css'
 import App from "./App.vue";
 import router from "./router";
 

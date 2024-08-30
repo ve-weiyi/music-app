@@ -1,5 +1,5 @@
 import request from "./request"
-import {MusicListQuery, MusicListResponse, IApiResponse, CreateMusicReq, GetMusicReq} from "./types"
+import {MusicListQuery, MusicListResponse, IApiResponse, CreateMusicReq, GetMusicReq,UploadMusicReq} from "./types"
 
 /** "ping" */
 export function getMusicListApi(data?: MusicListQuery): Promise<IApiResponse<MusicListResponse>> {
@@ -10,7 +10,7 @@ export function getMusicListApi(data?: MusicListQuery): Promise<IApiResponse<Mus
     })
 }
 
-export function createMusicApi(data?: CreateMusicReq): Promise<any> {
+export function createMusicApi(data?: CreateMusicReq): Promise<IApiResponse<any>> {
     return request({
         url: "/api/custom_generate",
         method: "post",
@@ -23,5 +23,13 @@ export function getMusicApi(data?: GetMusicReq): Promise<any> {
     return request({
         url: `/api/get?ids=${data.ids}`,
         method: "get"
+    })
+}
+
+export function uploadMusicApi(data?: UploadMusicReq): Promise<IApiResponse<any>> {
+    return request({
+        url: "/app/commercial/upload_voice",
+        method: "post",
+        data: data,
     })
 }
