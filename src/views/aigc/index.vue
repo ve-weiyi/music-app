@@ -54,8 +54,9 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
-import {createMusicApi, getMusicApi} from "@/api/music";
+import {createMusicApi, getMusicApi, uploadMusicApi} from "@/api/music";
 import {useMusicStore} from "@/store/modules/music";
+import {ElMessage} from "element-plus";
 
 const form = ref({
   title: '',
@@ -128,7 +129,7 @@ const startTimer = () => {
       count.value++;
       console.log('每3秒执行一次');
 
-      getMusicApi({ids: mid}).then(res => {
+      getMusicApi({ids: mid.value}).then(res => {
         console.log('获取音乐:', res);
 
         let music = {
@@ -137,10 +138,29 @@ const startTimer = () => {
           "download_url": res[0].audio_url
         }
 
-        if (music.download_url != "") {
+        uploadMusicApi({
+          file_name:music.file_name ,
+          music_type: 2,
+          file_type: 102,
+          ai_music_url:music.download_url,
+          tag: music.tag,
+          account: "36de8e994640236e0b6f7e74000ac7bcb7ff5c84"
+        }).then((res: any) => {
+          console.log('上传音乐:', res);
           stopTimer()
-          onPlayMusic(music)
-        }
+        });
+
+
+        // if (music.download_url != "") {
+        //   stopTimer()
+        //   uploadMusicApi(music).then(res => {
+        //     console.log('上传音乐:', res);
+        //
+        //
+        //     onPlayMusic(music)
+        //   });
+        //   onPlayMusic(music)
+        // }
       });
     }, 3000);
   }
@@ -165,16 +185,19 @@ const onSubmit = () => {
     tags: form.value.tags.toString(),
     prompt: form.value.prompt
   }
+  //
+  // createMusicApi(data).then(res => {
+  //   console.log('提交成功:', res);
+  //
+  //
+  //   let item = res[0]
+  //   mid.value = item.id
+  //
+  //   startTimer()
+  // });
 
-  createMusicApi(data).then(res => {
-    console.log('提交成功:', res);
 
-
-    let item = res[0]
-    mid.value = item.id
-
-    startTimer()
-  });
+  startTimer()
 
 };
 </script>
