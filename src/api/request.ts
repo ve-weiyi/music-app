@@ -23,8 +23,8 @@ requests.interceptors.request.use(
         config.headers = Object.assign({}, config.headers, {
             "Model-Type":"PHONE",
             "App-name":"nebula",
-            "X-Auth-Token":"2204eb14ed08c25fb35e73ad9a53b81b8f2eb811263ff104",
-            "Gtoken":"cc8cae523dfce3790997580bac59a9a2"
+            "X-Auth-Token":"f55b40f3faff1f22f76ea1bbf8b940ffa37dd18ce72f04ed",
+            "Gtoken":"cd6f59dcb68e54a69c6680b091747934"
         });
 
         return config;
@@ -37,13 +37,6 @@ requests.interceptors.request.use(
 // 配置响应拦截器
 requests.interceptors.response.use(
     (response: AxiosResponse) => {
-        switch (response.data.code) {
-            case 200:
-                break;
-            case 500:
-            default:
-                return Promise.reject(response.data.message);
-        }
         return response.data;
     },
     (error: AxiosError) => {

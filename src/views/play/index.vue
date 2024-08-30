@@ -10,7 +10,7 @@
         :border="false"
     >
       <template #right>
-        <van-icon name="share"  size="24"/>
+        <van-icon name="share" size="24" @click="  showToast('提示内容');"/>
       </template>
     </van-nav-bar>
     <div class="music-player">
@@ -22,26 +22,22 @@
 
       <!-- Song Title and Artist -->
       <div class="song-details">
-        <h2>七里香</h2>
+        <h2>{{music.file_name}}</h2>
       </div>
 
       <!-- Music Controls -->
       <div class="music-controls">
 
         <div class="progress-bar">
-          <span>04:16</span>
-          <input type="range" min="0" :max="duration" step="0.1" v-model="currentTime" @input="seek" />
-          <span>04:59</span>
+          <input type="range" min="0" :max="duration" step="0.1" v-model="currentTime" @input="seek"/>
         </div>
         <div class="play-controls">
-          <van-icon name="arrow-left"  size="48"/>
           <van-icon :name="isPlaying ? 'pause-circle-o' : 'play-circle-o' " size="48" @click="togglePlay"/>
-          <van-icon name="arrow" size="48"/>
         </div>
       </div>
     </div>
     <audio ref="audio" @timeupdate="updateProgress" @ended="onEnded">
-      <source src="@/assets/test.mp3" type="audio/mpeg" />
+      <source :src="music.download_url" type="audio/mpeg"/>
       您的浏览器不支持 audio 元素。
     </audio>
   </div>
@@ -50,6 +46,21 @@
 <script setup lang="ts">
 
 import {onMounted, ref} from "vue";
+import {useMusicStore} from "@/store/modules/music";
+import {Music} from "@/api/types";
+
+const music = ref<Music>(useMusicStore().music);
+if (!music.value.download_url) {
+  music.value = {
+    "file_name": "鸟鸣",
+    "tag": "自然",
+    "download_url": "https://edge-aiot-ore-ci.s3.dualstack.us-west-2.amazonaws.com/nebula/edge/warranty_card/2024/08/30/fff03f8701f7847568fde6575a87bb8deb294214/wRTqFQ4dZ96Gc7Ky.%E9%B8%9F%E9%B8%A3.mp3?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=AKIA4XHFIO3CQPCOG733%2F20240830%2Fus-west-2%2Fs3%2Faws4_request\u0026X-Amz-Date=20240830T152348Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=b37b5df3341a8b0bfc516de75c7bb1044364a33a9886a19f50c1c424a77ad926"
+  };
+}
+console.log("music", music.value);
+
+import { showToast } from 'vant';
+
 
 const onBack = () => history.back();
 

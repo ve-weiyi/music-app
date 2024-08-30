@@ -31,3 +31,7 @@ export interface CreateMusicReq {
     tags: string
     title: string
 }
+
+export interface GetMusicReq {
+    ids:string
+}

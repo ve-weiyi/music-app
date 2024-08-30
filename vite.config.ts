@@ -80,7 +80,7 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) => path.replace("", ""),
         },
         "/api": {
-          target: "http://18.212.39.166:3000",
+          target: "http://3.91.56.149:80",
           ws: false,
           changeOrigin: true,
           rewrite: (path) => path.replace("", ""),

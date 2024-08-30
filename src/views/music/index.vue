@@ -30,12 +30,16 @@ const onLoad = () => {
 import MusicCard from './card/MusicCard.vue';
 
 import {showToast} from 'vant';
+import {useMusicStore} from "@/store/modules/music";
 
 const router = useRouter();
 
 const onClickLeft = () => history.back();
 const onClickRight = () => showToast('按钮');
-const onPlayMusic = (id: number) => router.push(`/play/${id}`);
+const onPlayMusic = (music) => {
+  useMusicStore().setMusic(music);
+  router.push(`/play`);
+}
 
 const categorys = [
   {
@@ -66,17 +70,17 @@ const tags = [
     value: 3,
   },
   {
-    text: '纯音乐',
+    text: '古典',
     value: 4,
   },
 ]
 
 const category = ref(3);
-const tag = ref("");
+const tag = ref("自然");
 
 const onClickCategory = (item: any) => {
   console.log("111", item);
-  category.value = item.name;
+  category.value = 3-item.name;
   getMusics()
 }
 
@@ -153,12 +157,12 @@ const getMusics = () => {
     music_type: category.value,
     tag: tag.value,
   }).then(res => {
+    console.log("musics.value", res);
     let list = []
-    list.push(res.data.ai_music_list)
-    list.push(res.data.custom_music_list)
-    list.push(res.data.global_music_list)
+    list.push(...res.data.ai_music_list)
+    list.push(...res.data.custom_music_list)
+    list.push(...res.data.global_music_list)
     musics.value = list;
-    console.log("musics.value", musics.value);
   });
 }
 
@@ -184,7 +188,7 @@ onMounted(() => {
     <van-tab v-for="item in categorys" :key="item.value" :title="item.text"></van-tab>
   </van-tabs>
 
-  <van-tabs v-model:active="active" :ellipsis="true" @click-tab="onClickTag">
+  <van-tabs v-if="category==3" v-model:active="active" :ellipsis="true" @click-tab="onClickTag">
     <van-tab v-for="item in tags" :key="item.value" :title="item.text"></van-tab>
   </van-tabs>
 
@@ -198,15 +202,25 @@ onMounted(() => {
 
 
     <van-grid :column-num="2">
-      <van-grid-item v-for="card in cards" :key="card.id" icon="photo-o" text="文字" @click="onPlayMusic(card.id)">
+      <van-grid-item v-for="card in musics" :key="card.file_name" icon="photo-o" text="文字" @click="onPlayMusic(card)">
         <MusicCard
-            :key="card.id"
-            :image="card.image"
-            :title="card.title"
-            :listeners="card.listeners"
-            :selected="card.selected"
+            :key="card.file_name"
+            :image="'https://imge.kugou.com/stdmusic/240/20210917/20210917190830194456.jpg'"
+            :title="card.file_name"
+            :listeners="card.tag"
+            :selected="false"
         />
       </van-grid-item>
+
+<!--      <van-grid-item v-for="card in cards" :key="card.id" icon="photo-o" text="文字" @click="onPlayMusic(card.id)">-->
+<!--        <MusicCard-->
+<!--            :key="card.id"-->
+<!--            :image="card.image"-->
+<!--            :title="card.title"-->
+<!--            :listeners="card.listeners"-->
+<!--            :selected="card.selected"-->
+<!--        />-->
+<!--      </van-grid-item>-->
     </van-grid>
 
   </div>

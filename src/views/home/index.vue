@@ -10,7 +10,7 @@
       <!-- 背景图和播放按钮 -->
       <div class="background">
         <button class="play-button">
-          <van-icon name="play-circle" size="56" @click="onPlayMusic(0)"/>
+          <van-icon name="play-circle" size="56" @click="onPlayMusic()"/>
         </button>
       </div>
 
@@ -55,7 +55,7 @@ function onClickMenu(type: number) {
   }
 }
 
-const onPlayMusic = (id: number) => router.push(`/play/${id}`);
+const onPlayMusic = () => router.push(`/play`);
 
 </script>
 

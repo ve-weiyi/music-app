@@ -42,7 +42,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: "play/:musicId",
+        path: "play",
         name: "Play",
         component: () => import("@/views/play/index.vue"),
         meta: {

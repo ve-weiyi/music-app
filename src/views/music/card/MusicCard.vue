@@ -4,7 +4,7 @@
       <img :src="image" alt="Card Image">
     </div>
     <h3>{{ title }}</h3>
-    <p>{{ listeners }} 人正在听</p>
+    <p>{{ listeners }}</p>
   </div>
 </template>
 
@@ -23,8 +23,8 @@ export default defineComponent({
       required: true,
     },
     listeners: {
-      type: Number,
-      required: true,
+      type: String,
+      required: false,
     },
     selected: {
       type: Boolean,
