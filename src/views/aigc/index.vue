@@ -6,8 +6,6 @@
       @click-left="onBack"
   >
     <template #right>
-      <van-icon name="search" size="18"/>
-      <van-icon name="contact-o" size="18" style="margin-left: 10px"/>
     </template>
   </van-nav-bar>
   <div class="form-container">
