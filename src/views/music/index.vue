@@ -153,9 +153,9 @@ const getMusics = () => {
   console.log("getMusics", category.value, tag.value);
   getMusicListApi({
     file_name: "",
-    account: "fff03f8701f7847568fde6575a87bb8deb294214",
+    account: "36de8e994640236e0b6f7e74000ac7bcb7ff5c84",
     music_type: category.value,
-    tag: tag.value,
+    tag: category.value==3?tag.value:"",
   }).then(res => {
     console.log("musics.value", res);
     let list = []

@@ -8,29 +8,26 @@
     <template #right>
     </template>
   </van-nav-bar>
-  <div class="form-container">
+  <div class="form-container" v-loading="loading">
     <van-form @submit="onSubmit">
       <!-- Title Input -->
       <van-field
           v-model="form.title"
-          label="Title"
+          label="音乐名称"
           placeholder="请输入标题"
           required
       />
 
       <!-- Tags Input -->
-      <div class="tags-container">
-        <span>Tags:  </span>
-        <van-tag
-            v-for="tag in tags"
-            :key="tag"
-            :type="isSelected(tag) ? 'primary' : 'default'"
-            @click="toggleTag(tag)"
-            style="margin-right: 12px;font-size: 16px"
-        >
-          {{ tag }}
-        </van-tag>
-      </div>
+      <van-field name="checkboxGroup" label="音乐标签"  required>
+        <template #input>
+          <van-checkbox-group v-model="form.tags" direction="horizontal">
+            <van-checkbox v-for="tag in tags" :key="tag" :name="tag" :label="tag">
+              {{ tag }}
+            </van-checkbox>
+          </van-checkbox-group>
+        </template>
+      </van-field>
 
       <!-- Prompt Input -->
       <van-field
@@ -79,6 +76,8 @@ const toggleTag = (tag) => {
     form.value.tags.push(tag);
   }
 };
+
+const loading = ref(false)
 
 let testres = [
   {
@@ -139,14 +138,19 @@ const startTimer = () => {
         }
 
         uploadMusicApi({
-          file_name:music.file_name ,
-          music_type: 2,
+          file_name: music.file_name,
+          music_type: 1,
           file_type: 102,
-          ai_music_url:music.download_url,
+          ai_music_url: music.download_url,
           tag: music.tag,
           account: "36de8e994640236e0b6f7e74000ac7bcb7ff5c84"
         }).then((res: any) => {
           console.log('上传音乐:', res);
+          loading.value = false;
+          ElMessage({
+            message: "旋律上传成功，请到旋律库中聆听",
+            type: "success"
+          });
           stopTimer()
         });
 
@@ -185,6 +189,7 @@ const onSubmit = () => {
     tags: form.value.tags.toString(),
     prompt: form.value.prompt
   }
+
   //
   // createMusicApi(data).then(res => {
   //   console.log('提交成功:', res);
@@ -193,11 +198,11 @@ const onSubmit = () => {
   //   let item = res[0]
   //   mid.value = item.id
   //
-  //   startTimer()
+    startTimer()
   // });
 
-
-  startTimer()
+  loading.value = true;
+  // startTimer()
 
 };
 </script>
