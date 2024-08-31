@@ -8,6 +8,13 @@
     </div>
     <h3>{{ title }}</h3>
     <p>{{ listeners }}</p>
+
+    <div class="flex">
+      <van-icon name="close" />
+      <van-icon name="like-o" />
+      <van-icon name="share-o" />
+    </div>
+    <div></div>
   </div>
 </template>
 
@@ -51,6 +58,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .card {
   width: 150px;
   padding: 15px;
@@ -74,7 +86,7 @@ export default defineComponent({
   font-size: 14px;
 }
 .card p {
-  margin: 0;
+  margin: 5px;
   font-size: 12px;
   color: gray;
 }
