@@ -59,10 +59,9 @@ import { Music } from "@/api/types";
 const music = ref<Music>(useMusicStore().music);
 if (!music.value.download_url) {
   music.value = {
-    "file_name": "轻音乐",
+    "file_name": "鸟鸣",
     "tag": "自然",
-    "download_url": "https://audiopipe.suno.ai/?item_id=f8f843cc-e895-4831-8fb0-0805d4ebdbe6",
-    "image_url":"https://cdn2.suno.ai/image_f8f843cc-e895-4831-8fb0-0805d4ebdbe6.jpeg"
+    "download_url": "https://edge-aiot-ore-ci.s3.dualstack.us-west-2.amazonaws.com/nebula/edge/warranty_card/2024/08/30/fff03f8701f7847568fde6575a87bb8deb294214/wRTqFQ4dZ96Gc7Ky.%E9%B8%9F%E9%B8%A3.mp3?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=AKIA4XHFIO3CQPCOG733%2F20240831%2Fus-west-2%2Fs3%2Faws4_request\u0026X-Amz-Date=20240831T064020Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=c24aeb37211a458a4326ea0f62214398be4782997870f0d5ade77a725c6e1c2f",
   };
 }
 console.log("music", music.value);
