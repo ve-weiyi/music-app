@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-import {getMusicListApi} from "@/api/music";
+import { getMusicListApi } from "@/api/music";
 
 const active = ref(0);
 const titleActive = ref(0);
@@ -27,127 +26,127 @@ const onLoad = () => {
   }, 1000);
 };
 
-import MusicCard from './card/MusicCard.vue';
+import MusicCard from "./card/MusicCard.vue";
 
-import {showToast} from 'vant';
-import {useMusicStore} from "@/store/modules/music";
+import { showToast } from "vant";
+import { useMusicStore } from "@/store/modules/music";
 
 const router = useRouter();
 
 const onClickLeft = () => history.back();
-const onClickRight = () => showToast('按钮');
-const onPlayMusic = (music) => {
+const onClickRight = () => showToast("按钮");
+const onPlayMusic = music => {
   useMusicStore().setMusic(music);
   router.push(`/play`);
-}
+};
 
 const categorys = [
   {
-    text: '旋律库',
-    value: 1,
+    text: "旋律库",
+    value: 1
   },
   {
-    text: '自定义上传',
-    value: 2,
+    text: "自定义上传",
+    value: 2
   },
   {
-    text: 'AIGC',
-    value: 3,
-  },
-]
+    text: "AIGC",
+    value: 3
+  }
+];
 
 const tags = [
   {
-    text: '自然',
-    value: 1,
+    text: "自然",
+    value: 1
   },
   {
-    text: '白噪音',
-    value: 2,
+    text: "白噪音",
+    value: 2
   },
   {
-    text: '轻音乐',
-    value: 3,
+    text: "轻音乐",
+    value: 3
   },
   {
-    text: '古典',
-    value: 4,
-  },
-]
+    text: "古典",
+    value: 4
+  }
+];
 
 const category = ref(3);
 const tag = ref("自然");
 
 const onClickCategory = (item: any) => {
   console.log("111", item);
-  category.value = 3-item.name;
-  getMusics()
-}
+  category.value = 3 - item.name;
+  getMusics();
+};
 
 const onClickTag = (item: any) => {
   console.log("111", item);
   tag.value = item.title;
-  getMusics()
-}
+  getMusics();
+};
 
 const musics = ref([]);
 const cards = ref([
   {
     id: 1,
-    image: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
-    title: '轴韵',
+    image: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg",
+    title: "轴韵",
     listeners: 639,
     selected: false
   },
   {
     id: 2,
-    image: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
-    title: '七弦',
+    image: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg",
+    title: "七弦",
     listeners: 668,
     selected: false
   },
   {
     id: 3,
-    image: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
-    title: '手谈',
+    image: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg",
+    title: "手谈",
     listeners: 468,
     selected: false
   },
   {
     id: 4,
-    image: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
-    title: '磨砺',
+    image: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg",
+    title: "磨砺",
     listeners: 309,
     selected: false
   },
   {
     id: 5,
-    image: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
-    title: '手谈',
+    image: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg",
+    title: "手谈",
     listeners: 468,
     selected: false
   },
   {
     id: 6,
-    image: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
-    title: '磨砺',
+    image: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg",
+    title: "磨砺",
     listeners: 309,
     selected: false
   },
   {
     id: 7,
-    image: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
-    title: '手谈',
+    image: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg",
+    title: "手谈",
     listeners: 468,
     selected: false
   },
   {
     id: 8,
-    image: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
-    title: '磨砺',
+    image: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg",
+    title: "磨砺",
     listeners: 309,
     selected: false
-  },
+  }
 ]);
 const getMusics = () => {
   console.log("getMusics", category.value, tag.value);
@@ -155,41 +154,57 @@ const getMusics = () => {
     file_name: "",
     account: "36de8e994640236e0b6f7e74000ac7bcb7ff5c84",
     music_type: category.value,
-    tag: category.value==3?tag.value:"",
+    tag: category.value == 3 ? tag.value : ""
   }).then(res => {
     console.log("musics.value", res);
-    let list = []
-    list.push(...res.data.ai_music_list)
-    list.push(...res.data.custom_music_list)
-    list.push(...res.data.global_music_list)
+    let list = [];
+    list.push(...res.data.ai_music_list);
+    list.push(...res.data.custom_music_list);
+    list.push(...res.data.global_music_list);
     musics.value = list;
   });
-}
+};
 
 onMounted(() => {
-  getMusics()
+  getMusics();
 });
-
 </script>
 
 <template>
   <van-nav-bar
-      title="旋律库"
-      left-text="返回"
-      left-arrow
-      @click-left="onClickLeft"
+    title="旋律库"
+    left-text="返回"
+    left-arrow
+    @click-left="onClickLeft"
   >
-    <template #right>
-
-    </template>
+    <template #right> </template>
   </van-nav-bar>
 
-  <van-tabs v-model:active="titleActive" :ellipsis="true" @click-tab="onClickCategory">
-    <van-tab v-for="item in categorys" :key="item.value" :title="item.text"></van-tab>
+  <van-tabs
+    class="top_tab"
+    v-model:active="titleActive"
+    :ellipsis="true"
+    @click-tab="onClickCategory"
+  >
+    <van-tab
+      v-for="item in categorys"
+      :key="item.value"
+      :title="item.text"
+    ></van-tab>
   </van-tabs>
 
-  <van-tabs v-if="category==3" v-model:active="active" :ellipsis="true" @click-tab="onClickTag">
-    <van-tab v-for="item in tags" :key="item.value" :title="item.text"></van-tab>
+  <van-tabs
+    type="card"
+    v-if="category == 3"
+    v-model:active="active"
+    :ellipsis="true"
+    @click-tab="onClickTag"
+  >
+    <van-tab
+      v-for="item in tags"
+      :key="item.value"
+      :title="item.text"
+    ></van-tab>
   </van-tabs>
 
   <div style="padding: 16px">
@@ -200,34 +215,56 @@ onMounted(() => {
     <!--      <van-swipe-item>4</van-swipe-item>-->
     <!--    </van-swipe>-->
 
-
-    <van-grid :column-num="2">
-      <van-grid-item v-for="card in musics" :key="card.file_name" icon="photo-o" text="文字" @click="onPlayMusic(card)">
+    <van-grid :border="false" :column-num="2">
+      <van-grid-item
+        v-for="card in musics"
+        :key="card.file_name"
+        icon="photo-o"
+        text="文字"
+        @click="onPlayMusic(card)"
+      >
         <MusicCard
-            :key="card.file_name"
-            :image="'https://imge.kugou.com/stdmusic/240/20210917/20210917190830194456.jpg'"
-            :title="card.file_name"
-            :listeners="card.tag"
-            :selected="false"
+          :key="card.file_name"
+          :image="'https://imge.kugou.com/stdmusic/240/20210917/20210917190830194456.jpg'"
+          :title="card.file_name"
+          :listeners="card.tag"
+          :selected="false"
         />
       </van-grid-item>
 
-<!--      <van-grid-item v-for="card in cards" :key="card.id" icon="photo-o" text="文字" @click="onPlayMusic(card.id)">-->
-<!--        <MusicCard-->
-<!--            :key="card.id"-->
-<!--            :image="card.image"-->
-<!--            :title="card.title"-->
-<!--            :listeners="card.listeners"-->
-<!--            :selected="card.selected"-->
-<!--        />-->
-<!--      </van-grid-item>-->
+      <!--      <van-grid-item v-for="card in cards" :key="card.id" icon="photo-o" text="文字" @click="onPlayMusic(card.id)">-->
+      <!--        <MusicCard-->
+      <!--            :key="card.id"-->
+      <!--            :image="card.image"-->
+      <!--            :title="card.title"-->
+      <!--            :listeners="card.listeners"-->
+      <!--            :selected="card.selected"-->
+      <!--        />-->
+      <!--      </van-grid-item>-->
     </van-grid>
-
   </div>
-
 </template>
 
 <style>
+.van-tabs__nav--card {
+  box-sizing: border-box;
+  height: var(--van-tabs-card-height);
+  margin: 0 var(--van-padding-md);
+  border: none !important;
+  border-radius: var(--van-radius-sm);
+}
+.van-tab--card {
+  color: #7a7f84;
+  border-right: none !important;
+}
+.van-tab--card.van-tab--active {
+  /* border-radius: 17%; */
+  color: var(--van-white);
+  background-color: #abd1f8ba;
+}
+.top_tab {
+  margin-bottom: 10px;
+}
 .my-swipe .van-swipe-item {
   padding: 4px;
   color: #fff;
@@ -250,5 +287,4 @@ onMounted(() => {
   height: 100vh; /* 让容器充满整个视窗高度 */
   justify-content: center; /* 垂直居中对齐 */
 }
-
 </style>

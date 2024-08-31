@@ -1,20 +1,18 @@
 <template>
-
   <div class="bg">
     <van-nav-bar
-        title="音乐播放"
-        left-text="返回"
-        left-arrow
-        @click-left="onBack"
-        class="navbar"
-        :border="false"
+      title="音乐播放"
+      left-text="返回"
+      left-arrow
+      @click-left="onBack"
+      class="navbar"
+      :border="false"
     >
       <template #right>
-        <van-icon name="share" size="24" @click="  showToast('提示内容');"/>
+        <van-icon name="share" size="24" @click="showToast('提示内容')" />
       </template>
     </van-nav-bar>
     <div class="music-player">
-
       <!-- Image and Song Info -->
       <div class="song-info">
         <img class="album-art" :src="music.image_url ? music.image_url :'https://imge.kugou.com/stdmusic/240/20210917/20210917190830194456.jpg'" alt="Album Art">
@@ -22,32 +20,41 @@
 
       <!-- Song Title and Artist -->
       <div class="song-details">
-        <h2>{{music.file_name}}</h2>
+        <h2>{{ music.file_name }}</h2>
       </div>
 
       <!-- Music Controls -->
       <div class="music-controls">
-
         <div class="progress-bar">
-          <input type="range" min="0" :max="duration" step="0.1" v-model="currentTime" @input="seek"/>
+          <input
+            type="range"
+            min="0"
+            :max="duration"
+            step="0.1"
+            v-model="currentTime"
+            @input="seek"
+          />
         </div>
         <div class="play-controls">
-          <van-icon :name="isPlaying ? 'pause-circle-o' : 'play-circle-o' " size="48" @click="togglePlay"/>
+          <van-icon
+            :name="isPlaying ? 'pause-circle-o' : 'play-circle-o'"
+            size="48"
+            @click="togglePlay"
+          />
         </div>
       </div>
     </div>
     <audio ref="audio" @timeupdate="updateProgress" @ended="onEnded">
-      <source :src="music.download_url" type="audio/mpeg"/>
+      <source :src="music.download_url" type="audio/mpeg" />
       您的浏览器不支持 audio 元素。
     </audio>
   </div>
 </template>
 
 <script setup lang="ts">
-
-import {onMounted, ref} from "vue";
-import {useMusicStore} from "@/store/modules/music";
-import {Music} from "@/api/types";
+import { onMounted, ref } from "vue";
+import { useMusicStore } from "@/store/modules/music";
+import { Music } from "@/api/types";
 
 const music = ref<Music>(useMusicStore().music);
 if (!music.value.download_url) {
@@ -60,8 +67,7 @@ if (!music.value.download_url) {
 }
 console.log("music", music.value);
 
-import { showToast } from 'vant';
-
+import { showToast } from "vant";
 
 const onBack = () => history.back();
 
@@ -96,7 +102,6 @@ const seek = () => {
 const onEnded = () => {
   isPlaying.value = false;
 };
-
 </script>
 
 <style scoped>
@@ -214,7 +219,7 @@ const onEnded = () => {
   margin-bottom: 20px;
 }
 
-input[type='range'] {
+input[type="range"] {
   width: 100%;
   margin: 0 20px;
 }
@@ -225,6 +230,5 @@ input[type='range'] {
 }
 
 .icon-play {
-
 }
 </style>

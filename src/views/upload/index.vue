@@ -1,15 +1,14 @@
 <template>
   <div class="bg">
     <van-nav-bar
-      title="旋律上传"
+      title="添加音乐"
       left-text="返回"
       left-arrow
       @click-left="onBack"
       class="navbar"
       :border="false"
     >
-      <template #right>
-      </template>
+      <template #right> </template>
     </van-nav-bar>
 
     <div class="greeting-page" v-loading="loading">
@@ -22,17 +21,21 @@
       <!-- action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" -->
 
       <div class="background">
-        <el-upload
-          class="avatar-uploader"
-          method="put"
-          :action="uploadUrl"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-          <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-        </el-upload>
+        <div>
+          <el-upload
+            class="avatar-uploader"
+            method="put"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          </el-upload>
+          <p>您可选择美妙的音乐或旋律<br />您的喜欢伴您入眠</p>
+        </div>
+
         <!-- <van-uploader accept="radio/*" :after-read="afterRead">
           <van-button icon="plus" type="primary" @click="upload"
             >上传文件</van-button
@@ -41,10 +44,10 @@
       </div>
 
       <!-- 顶部信息 -->
-      <div class="header">
+      <!-- <div class="">
         <p class="greeting-message">您可选择美妙的音乐或旋律</p>
         <p class="greeting-message">您的喜欢伴您入眠</p>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -203,6 +206,9 @@ const beforeAvatarUpload: UploadProps["beforeUpload"] = async rawFile => {
   background-position: center;
   position: relative;
   width: 100%;
+}
+.background p {
+  margin-top: 15px;
 }
 
 .play-button {
