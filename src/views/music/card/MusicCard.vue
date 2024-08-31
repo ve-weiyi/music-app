@@ -1,7 +1,10 @@
 <template>
-  <div :class="['card', { selected: selected }]" :style="{ backgroundColor: randomColor }">
+  <div
+    :class="['card', { selected: selected }]"
+    :style="{ backgroundColor: randomColor }"
+  >
     <div class="image-container">
-      <img :src="image" alt="Card Image">
+      <img :src="image" alt="Card Image" />
     </div>
     <h3>{{ title }}</h3>
     <p>{{ listeners }}</p>
@@ -9,27 +12,27 @@
 </template>
 
 <script>
-import { defineComponent, toRefs } from 'vue';
+import { defineComponent, toRefs } from "vue";
 
 export default defineComponent({
-  name: 'Card',
+  name: "Card",
   props: {
     image: {
       type: String,
-      required: true,
+      required: true
     },
     title: {
       type: String,
-      required: true,
+      required: true
     },
     listeners: {
       type: String,
-      required: false,
+      required: false
     },
     selected: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   setup(props) {
     const { image, title, listeners, selected } = toRefs(props);
@@ -41,9 +44,9 @@ export default defineComponent({
       const r = Math.floor(Math.random() * 56 + 200); // Values between 200-255
       const g = Math.floor(Math.random() * 56 + 200); // Values between 200-255
       const b = Math.floor(Math.random() * 56 + 200); // Values between 200-255
-      return `rgb(${r}, ${g}, ${b})`;
-    },
-  },
+      return `rgba(${r}, ${g}, ${b},0.6)`;
+    }
+  }
 });
 </script>
 
@@ -53,11 +56,12 @@ export default defineComponent({
   padding: 15px;
   border-radius: 10px;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); */
   transition: box-shadow 0.3s ease;
 }
+
 .card:hover {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 .card img {
   width: 80px;
@@ -67,11 +71,11 @@ export default defineComponent({
 }
 .card h3 {
   margin: 10px 0 5px;
-  font-size: 16px;
+  font-size: 14px;
 }
 .card p {
   margin: 0;
-  font-size: 14px;
+  font-size: 12px;
   color: gray;
 }
 .card.selected {

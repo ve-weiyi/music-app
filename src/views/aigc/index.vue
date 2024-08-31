@@ -1,28 +1,32 @@
 <template>
   <van-nav-bar
-      title="旋律库"
-      left-text="返回"
-      left-arrow
-      @click-left="onBack"
+    title="AIGC Music"
+    left-text="返回"
+    left-arrow
+    @click-left="onBack"
   >
-    <template #right>
-    </template>
+    <template #right> </template>
   </van-nav-bar>
   <div class="form-container" v-loading="loading">
     <van-form @submit="onSubmit">
       <!-- Title Input -->
       <van-field
-          v-model="form.title"
-          label="音乐名称"
-          placeholder="请输入标题"
-          required
+        v-model="form.title"
+        label="音乐名称"
+        placeholder="请输入标题"
+        required
       />
 
       <!-- Tags Input -->
-      <van-field name="checkboxGroup" label="音乐标签"  required>
+      <van-field name="checkboxGroup" label="音乐标签" required>
         <template #input>
           <van-checkbox-group v-model="form.tags" direction="horizontal">
-            <van-checkbox v-for="tag in tags" :key="tag" :name="tag" :label="tag">
+            <van-checkbox
+              v-for="tag in tags"
+              :key="tag"
+              :name="tag"
+              :label="tag"
+            >
               {{ tag }}
             </van-checkbox>
           </van-checkbox-group>
@@ -31,18 +35,18 @@
 
       <!-- Prompt Input -->
       <van-field
-          v-model="form.prompt"
-          label="Prompt"
-          type="textarea"
-          placeholder="请输入提示信息"
-          rows="5"
-          required
+        v-model="form.prompt"
+        label="Prompt"
+        type="textarea"
+        placeholder="请输入提示信息"
+        rows="5"
+        required
       />
 
       <!-- Submit Button -->
       <div class="submit-button">
         <van-button round block type="primary" native-type="submit">
-          提交
+          AI定制音乐
         </van-button>
       </div>
     </van-form>
@@ -50,63 +54,63 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
-import {createMusicApi, getMusicApi, uploadMusicApi} from "@/api/music";
-import {useMusicStore} from "@/store/modules/music";
-import {ElMessage} from "element-plus";
-import {Music, UploadMusicReq} from "@/api/types";
+import { ref } from "vue";
+import { createMusicApi, getMusicApi, uploadMusicApi } from "@/api/music";
+import { useMusicStore } from "@/store/modules/music";
+import { ElMessage } from "element-plus";
+import { Music, UploadMusicReq } from "@/api/types";
 
 const form = ref({
-  title: '',
+  title: "",
   tags: [],
-  prompt: ''
+  prompt: ""
 });
 
 const onBack = () => history.back();
 // 预定义的标签列表
-const tags = ref(['自然', '白噪音', '轻音乐', '古典']);
+const tags = ref(["自然", "白噪音", "轻音乐", "古典"]);
 
-const loading = ref(false)
+const loading = ref(false);
 
 let testres = [
   {
-    "id": "5c27742f-796c-43db-b840-1d3958ad7533",
-    "title": "",
-    "image_url": null,
-    "lyric": "",
-    "audio_url": "",
-    "video_url": "",
-    "created_at": "2024-08-30T15:36:57.373Z",
-    "model_name": "chirp-v3",
-    "status": "submitted",
-    "gpt_description_prompt": null,
-    "prompt": "",
-    "type": "gen",
-    "tags": "",
-    "duration": null
+    id: "5c27742f-796c-43db-b840-1d3958ad7533",
+    title: "",
+    image_url: null,
+    lyric: "",
+    audio_url: "",
+    video_url: "",
+    created_at: "2024-08-30T15:36:57.373Z",
+    model_name: "chirp-v3",
+    status: "submitted",
+    gpt_description_prompt: null,
+    prompt: "",
+    type: "gen",
+    tags: "",
+    duration: null
   },
   {
-    "id": "cf7d25b5-e515-4305-9085-46ffea4ba6e5",
-    "title": "",
-    "image_url": null,
-    "lyric": "",
-    "audio_url": "",
-    "video_url": "",
-    "created_at": "2024-08-30T15:36:57.373Z",
-    "model_name": "chirp-v3",
-    "status": "submitted",
-    "gpt_description_prompt": null,
-    "prompt": "",
-    "type": "gen",
-    "tags": "",
-    "duration": null
+    id: "cf7d25b5-e515-4305-9085-46ffea4ba6e5",
+    title: "",
+    image_url: null,
+    lyric: "",
+    audio_url: "",
+    video_url: "",
+    created_at: "2024-08-30T15:36:57.373Z",
+    model_name: "chirp-v3",
+    status: "submitted",
+    gpt_description_prompt: null,
+    prompt: "",
+    type: "gen",
+    tags: "",
+    duration: null
   }
-]
+];
 const router = useRouter();
-const onPlayMusic = (music) => {
+const onPlayMusic = music => {
   useMusicStore().setMusic(music);
   router.push(`/play`);
-}
+};
 
 const count = ref(0);
 let intervalId: number | null = null;
@@ -115,19 +119,19 @@ const startTimer = () => {
   if (intervalId === null) {
     intervalId = window.setInterval(() => {
       count.value++;
-      console.log('每3秒执行一次');
+      console.log("每3秒执行一次");
 
-      getMusicApi({ids: mid.value}).then(res => {
-        console.log('获取音乐:', res);
+      getMusicApi({ ids: mid.value }).then(res => {
+        console.log("获取音乐:", res);
 
-        let music :Music= {
-          "file_name": res[0].title,
-          "tag": res[0].tags,
-          "download_url": res[0].audio_url
-        }
+        let music: Music = {
+          file_name: res[0].title,
+          tag: res[0].tags,
+          download_url: res[0].audio_url
+        };
 
         if (music.download_url != "") {
-          stopTimer()
+          stopTimer();
           uploadMusicApi({
             file_name: music.file_name,
             music_type: 1,
@@ -136,13 +140,13 @@ const startTimer = () => {
             tag: music.tag,
             account: "36de8e994640236e0b6f7e74000ac7bcb7ff5c84"
           }).then((res: any) => {
-            console.log('上传音乐:', res);
+            console.log("上传音乐:", res);
             loading.value = false;
             ElMessage({
               message: "旋律上传成功，请到旋律库中聆听",
               type: "success"
             });
-            onPlayMusic(music)
+            onPlayMusic(music);
           });
         }
       });
@@ -157,33 +161,31 @@ const stopTimer = () => {
   }
 };
 
-const mid = ref("")
+const mid = ref("");
 
 const onSubmit = () => {
   // 提交表单时执行的逻辑
-  console.log('表单提交:', form.value);
+  console.log("表单提交:", form.value);
   // 在这里可以处理表单数据，例如发送到服务器
 
   let data = {
     title: form.value.title,
     tags: form.value.tags.toString(),
     prompt: form.value.prompt
-  }
+  };
 
   createMusicApi(data).then(res => {
-    console.log('提交成功:', res);
+    console.log("提交成功:", res);
 
-
-    let item = res[0]
-    mid.value = item.id
+    let item = res[0];
+    mid.value = item.id;
 
     loading.value = true;
-    startTimer()
+    startTimer();
   });
 
   // loading.value = true;
   // startTimer()
-
 };
 </script>
 
@@ -198,5 +200,46 @@ const onSubmit = () => {
 
 .submit-button {
   margin-top: 16px;
+}
+.van-button--primary {
+  color: var(--van-button-primary-color);
+  background: #8b96ec;
+  /* border: var(--van-button-border-width) solid var(--van-button-primary-border-color); */
+}
+.van-cell {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  /* max-height: 23px; */
+  /* padding: 20px; */
+  padding: var(--van-cell-vertical-padding) var(--van-cell-horizontal-padding);
+  overflow: hidden;
+  color: var(--van-cell-text-color);
+  font-size: var(--van-cell-font-size);
+  line-height: var(--van-cell-line-height);
+  background: var(--van-cell-background);
+}
+
+.van-field__label {
+  -webkit-box-flex: 0;
+  -webkit-flex: none;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--van-field-label-width);
+  margin-right: var(--van-field-label-margin-right);
+  color: var(--van-field-label-color);
+  text-align: left;
+  word-wrap: break-word;
+  margin-bottom: 18px;
+}
+.van-field__body textarea {
+  /* font-size: 2.6667vmin; */
+  background: #edf1f294;
+  padding: 5px;
+  border-radius: 5px;
 }
 </style>
