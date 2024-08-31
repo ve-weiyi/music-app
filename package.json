@@ -3,7 +3,6 @@
   "homepage": "https://veweiyi.cn",
   "version": "0.6.0",
   "license": "MIT",
-  "repository": {
   "engines": {
     "node": ">= 18",
     "pnpm": ">= 9"
