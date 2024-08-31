@@ -10,6 +10,7 @@ export interface Music{
     file_name: string
     tag: string
     download_url: string
+    image_url?:string
 }
 
 

@@ -17,7 +17,7 @@
 
       <!-- Image and Song Info -->
       <div class="song-info">
-        <img class="album-art" src="https://imge.kugou.com/stdmusic/240/20210917/20210917190830194456.jpg" alt="Album Art">
+        <img class="album-art" :src="music.image_url ? music.image_url :'https://imge.kugou.com/stdmusic/240/20210917/20210917190830194456.jpg'" alt="Album Art">
       </div>
 
       <!-- Song Title and Artist -->
@@ -52,9 +52,10 @@ import {Music} from "@/api/types";
 const music = ref<Music>(useMusicStore().music);
 if (!music.value.download_url) {
   music.value = {
-    "file_name": "鸟鸣",
+    "file_name": "轻音乐",
     "tag": "自然",
-    "download_url": "https://edge-aiot-ore-ci.s3.dualstack.us-west-2.amazonaws.com/nebula/edge/warranty_card/2024/08/30/fff03f8701f7847568fde6575a87bb8deb294214/wRTqFQ4dZ96Gc7Ky.%E9%B8%9F%E9%B8%A3.mp3?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=AKIA4XHFIO3CQPCOG733%2F20240830%2Fus-west-2%2Fs3%2Faws4_request\u0026X-Amz-Date=20240830T152348Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=b37b5df3341a8b0bfc516de75c7bb1044364a33a9886a19f50c1c424a77ad926"
+    "download_url": "https://audiopipe.suno.ai/?item_id=f8f843cc-e895-4831-8fb0-0805d4ebdbe6",
+    "image_url":"https://cdn2.suno.ai/image_f8f843cc-e895-4831-8fb0-0805d4ebdbe6.jpeg"
   };
 }
 console.log("music", music.value);

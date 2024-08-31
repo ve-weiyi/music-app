@@ -19,7 +19,7 @@
       />
 
       <!-- Tags Input -->
-      <van-field name="checkboxGroup" label="音乐标签"  required>
+      <van-field name="checkboxGroup" label="音乐标签" required>
         <template #input>
           <van-checkbox-group v-model="form.tags" direction="horizontal">
             <van-checkbox v-for="tag in tags" :key="tag" :name="tag" :label="tag">
@@ -120,14 +120,21 @@ const startTimer = () => {
       getMusicApi({ids: mid.value}).then(res => {
         console.log('获取音乐:', res);
 
-        let music :Music= {
+        let music: Music = {
           "file_name": res[0].title,
           "tag": res[0].tags,
-          "download_url": res[0].audio_url
+          "download_url": res[0].audio_url,
+          "image_url": res[0].image_url,
         }
 
         if (music.download_url != "") {
           stopTimer()
+          loading.value = false;
+          ElMessage({
+            message: "旋律上传成功，请到旋律库中聆听",
+            type: "success"
+          });
+          onPlayMusic(music)
           uploadMusicApi({
             file_name: music.file_name,
             music_type: 1,
@@ -137,12 +144,6 @@ const startTimer = () => {
             account: "36de8e994640236e0b6f7e74000ac7bcb7ff5c84"
           }).then((res: any) => {
             console.log('上传音乐:', res);
-            loading.value = false;
-            ElMessage({
-              message: "旋律上传成功，请到旋律库中聆听",
-              type: "success"
-            });
-            onPlayMusic(music)
           });
         }
       });
