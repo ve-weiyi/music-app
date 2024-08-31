@@ -54,6 +54,7 @@ import {ref} from 'vue';
 import {createMusicApi, getMusicApi, uploadMusicApi} from "@/api/music";
 import {useMusicStore} from "@/store/modules/music";
 import {ElMessage} from "element-plus";
+import {Music, UploadMusicReq} from "@/api/types";
 
 const form = ref({
   title: '',
@@ -63,19 +64,7 @@ const form = ref({
 
 const onBack = () => history.back();
 // 预定义的标签列表
-const tags = ref(['自然', '白噪音', '轻音乐', '纯音乐']);
-
-// 检查标签是否被选中
-const isSelected = (tag) => form.value.tags.includes(tag);
-
-// 切换标签选中状态
-const toggleTag = (tag) => {
-  if (isSelected(tag)) {
-    form.value.tags = form.value.tags.filter(t => t !== tag);
-  } else {
-    form.value.tags.push(tag);
-  }
-};
+const tags = ref(['自然', '白噪音', '轻音乐', '古典']);
 
 const loading = ref(false)
 
@@ -131,40 +120,31 @@ const startTimer = () => {
       getMusicApi({ids: mid.value}).then(res => {
         console.log('获取音乐:', res);
 
-        let music = {
+        let music :Music= {
           "file_name": res[0].title,
           "tag": res[0].tags,
           "download_url": res[0].audio_url
         }
 
-        uploadMusicApi({
-          file_name: music.file_name,
-          music_type: 1,
-          file_type: 102,
-          ai_music_url: music.download_url,
-          tag: music.tag,
-          account: "36de8e994640236e0b6f7e74000ac7bcb7ff5c84"
-        }).then((res: any) => {
-          console.log('上传音乐:', res);
-          loading.value = false;
-          ElMessage({
-            message: "旋律上传成功，请到旋律库中聆听",
-            type: "success"
-          });
+        if (music.download_url != "") {
           stopTimer()
-        });
-
-
-        // if (music.download_url != "") {
-        //   stopTimer()
-        //   uploadMusicApi(music).then(res => {
-        //     console.log('上传音乐:', res);
-        //
-        //
-        //     onPlayMusic(music)
-        //   });
-        //   onPlayMusic(music)
-        // }
+          uploadMusicApi({
+            file_name: music.file_name,
+            music_type: 1,
+            file_type: 102,
+            ai_music_url: music.download_url,
+            tag: music.tag,
+            account: "36de8e994640236e0b6f7e74000ac7bcb7ff5c84"
+          }).then((res: any) => {
+            console.log('上传音乐:', res);
+            loading.value = false;
+            ElMessage({
+              message: "旋律上传成功，请到旋律库中聆听",
+              type: "success"
+            });
+            onPlayMusic(music)
+          });
+        }
       });
     }, 3000);
   }
@@ -190,18 +170,18 @@ const onSubmit = () => {
     prompt: form.value.prompt
   }
 
-  //
-  // createMusicApi(data).then(res => {
-  //   console.log('提交成功:', res);
-  //
-  //
-  //   let item = res[0]
-  //   mid.value = item.id
-  //
-    startTimer()
-  // });
+  createMusicApi(data).then(res => {
+    console.log('提交成功:', res);
 
-  loading.value = true;
+
+    let item = res[0]
+    mid.value = item.id
+
+    loading.value = true;
+    startTimer()
+  });
+
+  // loading.value = true;
   // startTimer()
 
 };

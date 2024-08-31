@@ -2,7 +2,7 @@
 
   <div class="bg">
     <van-nav-bar
-        title="标题"
+        title="音乐播放"
         left-text="返回"
         left-arrow
         @click-left="onBack"
@@ -17,7 +17,7 @@
 
       <!-- Image and Song Info -->
       <div class="song-info">
-        <img class="album-art" src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" alt="Album Art">
+        <img class="album-art" src="https://imge.kugou.com/stdmusic/240/20210917/20210917190830194456.jpg" alt="Album Art">
       </div>
 
       <!-- Song Title and Artist -->
